@@ -8,28 +8,24 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public List<GameObject> prefabs;
-    private const float spawnRate = 1.0f;
+    private float spawnRate = 2.0f;
 
+    public GameObject titleScreen;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
     public Button restartButton;
     private int score = 0;
-    public bool isGameActive = true;
-    
-    // Start is called before the first frame update
-    void Start()
+    public bool isGameActive = false;
+
+    public void StartGame(int diff)
     {
+        isGameActive = true;
+        scoreText.gameObject.SetActive(true);
+        titleScreen.gameObject.SetActive(false);
+        score = 0;
+        spawnRate /= diff;
         StartCoroutine(SpawnTarget());
         UpdateScore(0);
-    }
-
-    IEnumerator SpawnTarget()
-    {
-        while(isGameActive)
-        {
-            yield return new WaitForSeconds(spawnRate);
-            Instantiate(prefabs[Random.Range(0, prefabs.Count)]);
-        }
     }
 
     public void UpdateScore(int scoreDelta)
@@ -50,5 +46,14 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    IEnumerator SpawnTarget()
+    {
+        while (isGameActive)
+        {
+            yield return new WaitForSeconds(spawnRate);
+            Instantiate(prefabs[Random.Range(0, prefabs.Count)]);
+        }
     }
 }

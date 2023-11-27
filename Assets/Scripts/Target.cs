@@ -19,7 +19,6 @@ public class Target : MonoBehaviour
 
     public ParticleSystem explosion;
 
-    // Start is called before the first frame update
     void Start()
     {
         targetRB = GetComponent<Rigidbody>();
